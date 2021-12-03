@@ -27,11 +27,13 @@ if (process.env.NODE_ENV === 'production') {
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/build/index.html'));
-});
+}); // double check npm run build or wont work
 
 db.once('open', () => {
   app.listen(PORT, () => {
-    console.log(`API server running on port ${PORT}!`);
-    console.log(`Use GraphQL at http://localhost:${PORT}${server.graphqlPath}`);
+    if (!process.env.NODE_ENV === 'production') {
+      console.log(`API server running on port ${PORT}!`);
+      console.log(`Use GraphQL at http://localhost:${PORT}${server.graphqlPath}`);
+    };
   });
 });
