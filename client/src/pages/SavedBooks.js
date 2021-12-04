@@ -1,16 +1,15 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { Jumbotron, Container, CardColumns, Card, Button } from 'react-bootstrap';
+import Auth from '../utils/auth';
+import { removeBookId } from '../utils/localStorage';
+
 import { useQuery, useMutation } from '@apollo/client';
 import { GET_ME } from '../utils/queries'
 import { REMOVE_BOOK } from '../utils/mutations';
 
-import { Jumbotron, Container, CardColumns, Card, Button } from 'react-bootstrap';
-
-import Auth from '../utils/auth';
-import { removeBookId } from '../utils/localStorage';
-
 const SavedBooks = () => {
   const { loading, data } = useQuery(GET_ME);
-  const [deleteBook, { error }] = useMutation(REMOVE_BOOK);
+  const [removeBook, { error }] = useMutation(REMOVE_BOOK);
 
   const userData = data?.me || {};
 
@@ -23,13 +22,9 @@ const SavedBooks = () => {
     }
 
     try {
-      const response = await deleteBook({
+      const response = await removeBook({
         variables: { bookId }
       });
-
-      if (!response.ok) {
-        throw new Error('something went wrong!');
-      }
 
       removeBookId(bookId);
     } catch (err) {
