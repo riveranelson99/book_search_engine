@@ -37,7 +37,7 @@ const resolvers = {
     },
     saveBook: async (parent, { input }, context) => {
       if (context.user) {
-        return User.findByIdAndUpdate(
+        const updatedUser = await User.findByIdAndUpdate(
           { _id: context.user._id },
           {
             $addToSet: {
@@ -46,16 +46,13 @@ const resolvers = {
           },
           { new: true }
         );
+        return updatedUser;
       }
       throw new AuthenticationError('You need to be logged in!');
     },
     removeBook: async (parent, { bookId }, context) => {
-      if (!context.user) {
-        throw new AuthenticationError('Could not find user with this id!');
-      }
-
       if (context.user) {
-        return User.findByIdAndUpdate(
+        const updatedUser = await User.findByIdAndUpdate(
           { _id: context.user._id },
           {
             $pull: {
@@ -66,6 +63,7 @@ const resolvers = {
           },
           { new: true }
         );
+        return updatedUser;
       }
       throw new AuthenticationError('You need to be logged in!');
     },
