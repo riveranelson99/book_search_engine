@@ -27,3 +27,4 @@ Refactoring a working restful api app in order to utilize graphql.
 
 ## Deployed Application
 
+[Link to deployed app](https://warm-waters-19841.herokuapp.com/)
